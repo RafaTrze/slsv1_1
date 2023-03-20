@@ -1,0 +1,27 @@
+{
+  "name": "slsv1_1",
+  "version": "1.0.0",
+  "description": "apigateway-lambda-sqs-lambda-sns",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest --watchAll"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RafaTrze/slsv1_1.git"
+  },
+  "author": "RT",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RafaTrze/slsv1_1/issues"
+  },
+  "homepage": "https://github.com/RafaTrze/slsv1_1#readme",
+  "dependencies": {
+    "aws-sdk": "^2.1335.0",
+    "pino": "^8.11.0"
+  },
+  "devDependencies": {
+    "aws-sdk-mock": "^5.8.0",
+    "jest": "^29.5.0"
+  }
+}

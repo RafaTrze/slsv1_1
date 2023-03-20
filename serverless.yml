@@ -1,0 +1,47 @@
+service: apig-lambda-sqs-lambda-sns
+frameworkVersion: '3'
+
+custom:
+  ACCOUNT_ID: 533322355632
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: eu-west-2
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action: 
+            - sqs:SendMessage
+            - sqs:ReceiveMessage
+          Resource: '*'
+        - Effect: Allow
+          Action: 
+            - sns:Publish
+          Resource: '*'
+  environment:
+    QUEUE_URL: https://sqs.${self:provider.region}.amazonaws.com/${self:custom.ACCOUNT_ID}/rt-sqs-queue
+    REGION: ${self:provider.region}
+    ARN: arn:aws
+
+functions:
+  apig-lambda-sqs:
+    handler: src/handlers/lambda2sqs.handler
+    events:
+      - httpApi:
+          path: /message
+          method: post
+  sqs-lambda-sns:
+    handler: src/handlers/sqs2lambda2sns.handler
+    events:
+      - sqs: 
+          arn: ${self:provider.environment.ARN}:sqs:${self:provider.region}:${self:custom.ACCOUNT_ID}:rt-sqs-queue
+          batchSize: 1
+
+resources:
+  Resources:
+    MyQueue:
+      Type: AWS::SQS::Queue
+      Properties:
+        QueueName: rt-sqs-queue
