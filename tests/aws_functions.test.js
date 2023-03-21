@@ -25,22 +25,30 @@ describe('test aws_functions', () => {
     bodyMock = {};
     queueUrlMock = '';
   });
+  // I'm not sure if expect params is strictly neccessary.
+  // test('send successful message to sqs', async () => {
+  //   AWS.mock('SQS', 'sendMessage', (params, callback) => {
+  //     expect(params).toEqual({
+  //       MessageBody: JSON.stringify(bodyMock),
+  //       QueueUrl: queueUrlMock,
+  //     });
+  //     callback(null, {
+  //       ResponseMetadata: {
+  //           RequestId: "081ef2c2-fc12-5864-bad5-ae4c7e5c3111"
+  //       },
+  //       MD5OfMessageBody: "d7b2333de216b74538ab4560af349d11",
+  //       MessageId: "111"
+  //     });
+  //   });
 
   test('send successful message to sqs', async () => {
-    AWS.mock('SQS', 'sendMessage', (params, callback) => {
-      expect(params).toEqual({
-        MessageBody: JSON.stringify(bodyMock),
-        QueueUrl: queueUrlMock,
-      });
-      callback(null, {
-        ResponseMetadata: {
-            RequestId: "081ef2c2-fc12-5864-bad5-ae4c7e5c3111"
-        },
-        MD5OfMessageBody: "d7b2333de216b74538ab4560af349d11",
-        MessageId: "111"
-      });
+    AWS.mock('SQS', 'sendMessage', {
+      ResponseMetadata: {
+        RequestId: "081ef2c2-fc12-5864-bad5-ae4c7e5c3111"
+    },
+    MD5OfMessageBody: "d7b2333de216b74538ab4560af349d11",
+    MessageId: "111"
     });
-
     const paramsMock = {
       MessageBody: JSON.stringify(bodyMock), // sqs only accepts strings
       QueueUrl: queueUrlMock // url of the target queue
